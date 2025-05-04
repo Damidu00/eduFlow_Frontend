@@ -24,3 +24,403 @@
   width: 100%;
   margin: 0 auto;
 }
+
+/* Logo Styles */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Right Section with Icons */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
+/* Icons Container */
+.navbar-items {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.5rem 1rem;
+  background: rgba(201, 87, 146, 0.1);
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  margin-left: auto;
+}
+
+/* Icon Container */
+.navbar-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 8px;
+}
+
+/* Icon Styles */
+.navbar-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C95792;
+  background: rgba(201, 87, 146, 0.1);
+  border: 1px solid rgba(201, 87, 146, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(124, 69, 133, 0.1);
+}
+
+.navbar-icon svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.navbar-icon:hover {
+  background: rgba(201, 87, 146, 0.2);
+  transform: translateY(-2px);
+  color: #7C4585;
+  border-color: #C95792;
+  box-shadow: 0 4px 12px rgba(201, 87, 146, 0.2);
+}
+
+.navbar-icon:hover svg {
+  transform: scale(1.1);
+}
+
+.navbar-icon.active {
+  background: #C95792;
+  color: #7C4585;
+  border-color: #C95792;
+}
+
+.navbar-icon.active:hover {
+  background: #b84d82;
+}
+
+/* Notification Badge */
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #7C4585;
+  color: #C95792;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 2px solid #C95792;
+  box-shadow: 0 2px 4px rgba(124, 69, 133, 0.2);
+}
+
+/* User Avatar Styles */
+.navbar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #C95792;
+  color: #7C4585;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(201, 87, 146, 0.3);
+}
+
+.navbar-avatar:hover {
+  transform: scale(1.05);
+  border-color: #C95792;
+}
+
+/* Dropdown Menu */
+.navbar-dropdown {
+  position: relative;
+}
+
+.navbar-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #7C4585;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  min-width: 220px;
+  padding: 0.75rem 0;
+  margin-top: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1001;
+  border: 1px solid rgba(201, 87, 146, 0.2);
+}
+
+.navbar-dropdown:hover .navbar-dropdown-menu,
+.navbar-dropdown:focus-within .navbar-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown Items */
+.navbar-dropdown-item {
+  padding: 0.75rem 1.25rem;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.navbar-dropdown-item:hover {
+  background-color: rgba(201, 87, 146, 0.2);
+  color: #C95792;
+}
+
+.navbar-dropdown-item svg {
+  width: 18px;
+  height: 18px;
+  color: #C95792;
+}
+
+/* Card Info Icons */
+.navbar-card-field svg {
+  color: #C95792;
+  background: rgba(201, 87, 146, 0.1);
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-card-field:hover svg {
+  background: rgba(201, 87, 146, 0.2);
+  transform: scale(1.05);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .navbar-component {
+    padding: 0 1rem;
+    height: 70px;
+  }
+
+  .navbar-logo img {
+    height: 40px;
+  }
+
+  .navbar-logo img:hover {
+    transform: scale(1.05);
+  }
+
+  .navbar-items {
+    gap: 1rem;
+  }
+
+  .navbar-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .navbar-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .notification-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+}
+
+/* Accessibility Focus Styles */
+.navbar-icon:focus-visible,
+.navbar-avatar:focus-visible {
+  outline: 2px solid #C95792;
+  outline-offset: 2px;
+}
+
+.navbar-user-card {
+  position: absolute;
+  top: 90px;
+  right: 2rem;
+  background: #7C4585;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 320px;
+  overflow: hidden;
+  z-index: 1001;
+  animation: slideIn 0.2s ease;
+  border: 1px solid rgba(201, 87, 146, 0.2);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-card-content {
+  padding: 1.5rem;
+}
+
+.navbar-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.navbar-card-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #C95792;
+  color: #7C4585;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 2px solid rgba(201, 87, 146, 0.3);
+}
+
+.navbar-card-titles {
+  flex: 1;
+}
+
+.navbar-card-titles h3 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.navbar-card-titles p {
+  color: #C95792;
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+}
+
+.navbar-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.navbar-card-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: rgba(201, 87, 146, 0.1);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.navbar-card-field:hover {
+  background: rgba(201, 87, 146, 0.2);
+}
+
+.navbar-card-field-content {
+  flex: 1;
+}
+
+.navbar-card-field-label {
+  color: #C95792;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.navbar-card-field-value {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.navbar-card-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.navbar-update-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: #C95792;
+  color: #7C4585;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.navbar-update-btn:hover {
+  background: rgba(201, 87, 146, 0.8);
+  transform: translateY(-2px);
+}
+
+.navbar-delete-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: rgba(255, 82, 82, 0.1);
+  color: #FF5252;
+  border: 1px solid rgba(255, 82, 82, 0.2);
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.navbar-delete-btn:hover {
+  background: rgba(255, 82, 82, 0.2);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .navbar-user-card {
+    right: 1rem;
+    width: calc(100% - 2rem);
+  }
+}
