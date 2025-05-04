@@ -49,3 +49,69 @@
   gap: 1.5rem;
   margin-left: auto;
 }
+
+/* Icons Container */
+.navbar-items {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.5rem 1rem;
+  background: rgba(201, 87, 146, 0.1);
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  margin-left: auto;
+}
+
+/* Icon Container */
+.navbar-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 8px;
+}
+
+/* Icon Styles */
+.navbar-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C95792;
+  background: rgba(201, 87, 146, 0.1);
+  border: 1px solid rgba(201, 87, 146, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(124, 69, 133, 0.1);
+}
+
+.navbar-icon svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.navbar-icon:hover {
+  background: rgba(201, 87, 146, 0.2);
+  transform: translateY(-2px);
+  color: #7C4585;
+  border-color: #C95792;
+  box-shadow: 0 4px 12px rgba(201, 87, 146, 0.2);
+}
+
+.navbar-icon:hover svg {
+  transform: scale(1.1);
+}
+
+.navbar-icon.active {
+  background: #C95792;
+  color: #7C4585;
+  border-color: #C95792;
+}
+
+.navbar-icon.active:hover {
+  background: #b84d82;
+}
