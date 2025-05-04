@@ -10,3 +10,89 @@
   flex-shrink: 0;
 }
 
+.sideBarNav {
+  width: 240px;
+  height: calc(100vh - 80px); /* Adjust based on navbar height */
+  background: rgba(33, 15, 55, 0.95);
+  border-right: 1px solid rgba(230, 157, 184, 0.2);
+  padding: 1.5rem 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  position: fixed;
+  top: 80px; /* Match navbar height */
+  left: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+}
+
+.sideBarNavItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  flex: 1;
+}
+
+.sideBarNavItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #E69DB8;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.sideBarNavItem:hover {
+  background: rgba(230, 157, 184, 0.15);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.sideBarNavItem:hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: #E69DB8;
+  border-radius: 2px;
+}
+
+.sideBarNavItemActive {
+  background: rgba(230, 157, 184, 0.2);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.sideBarNavItemActive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: #E69DB8;
+  border-radius: 2px;
+}
+
+.sideBarNavItemActive .sideBarNavIcon {
+  color: #ffffff;
+}
+
+.sideBarNavIcon {
+  color: #E69DB8;
+  transition: all 0.3s ease;
+}
+
+.sideBarNavItem:hover .sideBarNavIcon {
+  color: #ffffff;
+  transform: scale(1.1);
+}
