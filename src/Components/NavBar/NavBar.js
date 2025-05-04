@@ -36,6 +36,19 @@ function NavBar() {
         }
     }, [userId]);
 
+    const handleDeleteProfile = async () => {
+        if (window.confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
+            try {
+                await axios.delete(`http://localhost:8080/user/${userId}`);
+                alert('Profile deleted successfully!');
+                localStorage.removeItem('userID');
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Error deleting profile:', error);
+                alert('Failed to delete profile. Please try again.');
+            }
+        }
+    };
 
     const getInitials = (name) => {
         return name
@@ -49,7 +62,6 @@ function NavBar() {
 
     return (
         <nav className="navbar-component">
-
             <div className="navbar-container">
                 <div className="navbar-logo">
                     <img src={EduFlowLogo} alt="EduFlow Logo" className="navbar-logo-img" />
@@ -161,7 +173,6 @@ function NavBar() {
                     </div>
                 </div>
             )}
-            
         </nav>
     );
 }
