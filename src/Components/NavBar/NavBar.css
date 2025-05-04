@@ -41,3 +41,11 @@
 .navbar-logo img:hover {
   transform: scale(1.05);
 }
+
+/* Right Section with Icons */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+}
