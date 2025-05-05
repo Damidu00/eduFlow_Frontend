@@ -65,6 +65,133 @@ function AddNewPost() {
         setMedia(files);
         setMediaPreviews(previews);
       };
+
+
+
+
+
+      return (
+        <div className="add-post-container">
+          <SideBar />
+          <div className="add-post-content">
+            <div className="add-post-card">
+              <div className="add-post-header">
+                <Plus size={24} />
+                <h1>Create New Post</h1>
+              </div>
+              
+              <form onSubmit={handleSubmit} className="add-post-form">
+                <div className="form-group">
+                  <label className="form-label">
+                    <Type size={18} />
+                    Post Title
+                  </label>
+                  <input
+                    className="form-input"
+                    type="text"
+                    placeholder="Enter an engaging title for your post"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">
+                    <FileText size={18} />
+                    Description
+                  </label>
+                  <textarea
+                    className="form-textarea"
+                    placeholder="Write your post content here..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                    rows={6}
+                  />
+                </div>
+    
+                <div className="media-upload-section">
+                  <label className="media-upload-label" htmlFor="media-upload">
+                    <Upload size={24} />
+                    <div className="media-upload-text">
+                      <strong>Click to upload</strong> or drag and drop
+                      <br />
+                      Images or videos (max 5 files)
+                    </div>
+                  </label>
+                  <input
+                    id="media-upload"
+                    type="file"
+                    accept="image/*,video/*"
+                    multiple
+                    onChange={handleMediaChange}
+                    style={{ display: 'none' }}
+                  />
+    
+                  {mediaPreviews.length > 0 && (
+                    <div className="media-preview-grid">
+                      {mediaPreviews.map((preview, index) => (
+                        <div key={index} className="media-preview-item">
+                          {preview.type.startsWith('image/') ? (
+                            <img
+                              src={preview.url}
+                              alt={`Preview ${index + 1}`}
+                            />
+                          ) : (
+                            <video
+                              src={preview.url}
+                              muted
+                              loop
+                              onMouseOver={e => e.target.play()}
+                              onMouseOut={e => e.target.pause()}
+                            />
+                          )}
+                          <button
+                            type="button"
+                            className="media-remove-btn"
+                            onClick={() => removeMedia(index)}
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
+                <div className="form-actions">
+                  <button 
+                    type="button" 
+                    className="form-btn form-btn-secondary"
+                    onClick={() => window.location.href = '/allPost'}
+                  >
+                    <X size={18} />
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    className={`form-btn form-btn-primary ${isLoading ? 'loading' : ''}`}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader size={18} />
+                        Publishing...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} />
+                        Publish Post
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      );
       
 
 
