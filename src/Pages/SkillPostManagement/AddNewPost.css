@@ -304,3 +304,53 @@
 .form-btn-primary.loading svg {
   animation: spin 1s linear infinite;
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .add-post-content {
+    margin-left: 0;
+    margin-top: 60px; /* Smaller navbar height on mobile */
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .add-post-header {
+    padding: 1.5rem;
+  }
+
+  .add-post-form {
+    padding: 1.5rem;
+  }
+
+  .media-preview-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .form-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .add-post-container {
+    padding-top: 0; /* Remove padding-top */
+  }
+
+  .media-upload-label {
+    padding: 2rem 1.5rem;
+  }
+}
