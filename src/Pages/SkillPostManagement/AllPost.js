@@ -64,5 +64,21 @@ function AllPost() {
         fetchPosts();
       }, []);
 
+      useEffect(() => {
+        const fetchFollowedUsers = async () => {
+          const userID = localStorage.getItem('userID');
+          if (userID) {
+            try {
+              const response = await axios.get(`http://localhost:8080/user/${userID}/followedUsers`);
+              setFollowedUsers(response.data);
+            } catch (error) {
+              console.error('Error fetching followed users:', error);
+            }
+          }
+        };
+    
+        fetchFollowedUsers();
+      }, []);
+
 
 }
