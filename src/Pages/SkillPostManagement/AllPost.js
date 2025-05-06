@@ -185,4 +185,47 @@ function AllPost() {
       console.error("Error toggling follow state:", error);
     }
   };
+
+  const handleAddComment = async (postId) => {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      alert("Please log in to comment.");
+      return;
+    }
+    const content = newComment[postId] || ""; // Get the comment content for the specific post
+    if (!content.trim()) {
+      alert("Comment cannot be empty.");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/posts/${postId}/comment`,
+        {
+          userID,
+          content,
+        }
+      );
+
+      // Update the specific post's comments in the state
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? { ...post, comments: response.data.comments }
+            : post
+        )
+      );
+
+      setFilteredPosts((prevFilteredPosts) =>
+        prevFilteredPosts.map((post) =>
+          post.id === postId
+            ? { ...post, comments: response.data.comments }
+            : post
+        )
+      );
+
+      setNewComment({ ...newComment, [postId]: "" });
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
 }
