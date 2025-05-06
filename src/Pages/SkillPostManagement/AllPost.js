@@ -128,4 +128,36 @@ function AllPost() {
     }
     setShowMyPosts(!showMyPosts); // Toggle the state
   };
+
+  const handleLike = async (postId) => {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      alert("Please log in to like a post.");
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/posts/${postId}/like`,
+        null,
+        {
+          params: { userID },
+        }
+      );
+
+      // Update the specific post's likes in the state
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? { ...post, likes: response.data.likes } : post
+        )
+      );
+
+      setFilteredPosts((prevFilteredPosts) =>
+        prevFilteredPosts.map((post) =>
+          post.id === postId ? { ...post, likes: response.data.likes } : post
+        )
+      );
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
 }
