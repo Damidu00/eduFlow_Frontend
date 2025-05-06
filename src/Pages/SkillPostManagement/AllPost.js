@@ -160,4 +160,29 @@ function AllPost() {
       console.error("Error liking post:", error);
     }
   };
+
+  const handleFollowToggle = async (postOwnerID) => {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      alert("Please log in to follow/unfollow users.");
+      return;
+    }
+    try {
+      if (followedUsers.includes(postOwnerID)) {
+        // Unfollow logic
+        await axios.put(`http://localhost:8080/user/${userID}/unfollow`, {
+          unfollowUserID: postOwnerID,
+        });
+        setFollowedUsers(followedUsers.filter((id) => id !== postOwnerID));
+      } else {
+        // Follow logic
+        await axios.put(`http://localhost:8080/user/${userID}/follow`, {
+          followUserID: postOwnerID,
+        });
+        setFollowedUsers([...followedUsers, postOwnerID]);
+      }
+    } catch (error) {
+      console.error("Error toggling follow state:", error);
+    }
+  };
 }
