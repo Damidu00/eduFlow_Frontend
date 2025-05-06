@@ -113,4 +113,8 @@ function AllPost() {
       alert("Failed to delete post.");
     }
   };
+
+  const handleUpdate = (postId) => {
+    navigate(`/updatePost/${postId}`); // Navigate to the UpdatePost page with the post ID
+  };
 }
