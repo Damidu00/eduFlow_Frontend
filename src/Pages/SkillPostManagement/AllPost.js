@@ -128,4 +128,145 @@ function AllPost() {
     }
     setShowMyPosts(!showMyPosts); // Toggle the state
   };
+
+  const handleLike = async (postId) => {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      alert("Please log in to like a post.");
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/posts/${postId}/like`,
+        null,
+        {
+          params: { userID },
+        }
+      );
+
+      // Update the specific post's likes in the state
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? { ...post, likes: response.data.likes } : post
+        )
+      );
+
+      setFilteredPosts((prevFilteredPosts) =>
+        prevFilteredPosts.map((post) =>
+          post.id === postId ? { ...post, likes: response.data.likes } : post
+        )
+      );
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
+  const handleFollowToggle = async (postOwnerID) => {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      alert("Please log in to follow/unfollow users.");
+      return;
+    }
+    try {
+      if (followedUsers.includes(postOwnerID)) {
+        // Unfollow logic
+        await axios.put(`http://localhost:8080/user/${userID}/unfollow`, {
+          unfollowUserID: postOwnerID,
+        });
+        setFollowedUsers(followedUsers.filter((id) => id !== postOwnerID));
+      } else {
+        // Follow logic
+        await axios.put(`http://localhost:8080/user/${userID}/follow`, {
+          followUserID: postOwnerID,
+        });
+        setFollowedUsers([...followedUsers, postOwnerID]);
+      }
+    } catch (error) {
+      console.error("Error toggling follow state:", error);
+    }
+  };
+
+  const handleAddComment = async (postId) => {
+    const userID = localStorage.getItem("userID");
+    if (!userID) {
+      alert("Please log in to comment.");
+      return;
+    }
+    const content = newComment[postId] || ""; // Get the comment content for the specific post
+    if (!content.trim()) {
+      alert("Comment cannot be empty.");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/posts/${postId}/comment`,
+        {
+          userID,
+          content,
+        }
+      );
+
+      // Update the specific post's comments in the state
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? { ...post, comments: response.data.comments }
+            : post
+        )
+      );
+
+      setFilteredPosts((prevFilteredPosts) =>
+        prevFilteredPosts.map((post) =>
+          post.id === postId
+            ? { ...post, comments: response.data.comments }
+            : post
+        )
+      );
+
+      setNewComment({ ...newComment, [postId]: "" });
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
+  const handleDeleteComment = async (postId, commentId) => {
+    const userID = localStorage.getItem("userID");
+    try {
+      await axios.delete(
+        `http://localhost:8080/posts/${postId}/comment/${commentId}`,
+        {
+          params: { userID },
+        }
+      );
+
+      // Update state to remove the deleted comment
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                comments: post.comments.filter(
+                  (comment) => comment.id !== commentId
+                ),
+              }
+            : post
+        )
+      );
+
+      setFilteredPosts((prevFilteredPosts) =>
+        prevFilteredPosts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                comments: post.comments.filter(
+                  (comment) => comment.id !== commentId
+                ),
+              }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
 }
