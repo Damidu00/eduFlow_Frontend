@@ -94,6 +94,7 @@ function AllPost() {
 
     fetchFollowedUsers();
   }, []);
+  //done above
 
   const handleDelete = async (postId) => {
     const confirmDelete = window.confirm(
@@ -324,7 +325,7 @@ function AllPost() {
     setIsModalOpen(false);
   };
 
-  console.log("Filtered Posts:", filteredPosts);
+  console.log("Filtered Posts:", filteredPosts); // Debug log to verify filtered posts
 
   return (
     <div className="posts-container">
