@@ -1,35 +1,63 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './UserLogin.module.css';
-import GoogleLogo from './img/glogo.png';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import SideBar from '../../Components/SideBar/SideBar';
+import { Plus, X } from 'lucide-react'; // Importing Lucide icons
+import styles from './UpdateUserProfile.module.css';
 
-function UserLogin() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+function UpdateUserProfile() {
+  const { id } = useParams();
+  const [formData, setFormData] = useState({
+    fullname: '',
+    email: '',
+    password: '',
+    phone: '',
+    skills: [],
+  });
+  const [skillInput, setSkillInput] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/user/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        return response.json();
+      })
+      .then((data) => setFormData(data))
+      .catch((error) => console.error('Error:', error));
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleAddSkill = () => {
+    if (skillInput.trim()) {
+      setFormData({ ...formData, skills: [...formData.skills, skillInput] });
+      setSkillInput('');
+    }
+  };
+
+  const handleDeleteSkill = (index) => {
+    const updatedSkills = formData.skills.filter((_, i) => i !== index);
+    setFormData({ ...formData, skills: updatedSkills });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:8080/user/${id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData), 
+        body: JSON.stringify(formData),
       });
-      
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('userID', data.id); 
-        alert('Login successful!');
-        navigate('/learningSystem/allLearningPost'); 
-      } else if (response.status === 401) {
-        alert('Invalid credentials!'); 
+        alert('Profile updated successfully!');
+        window.location.reload();
       } else {
-        alert('Failed to login!');
+        alert('Failed to update profile.');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -38,89 +66,99 @@ function UserLogin() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.hero}>
-          <div className={styles.heroImage}></div>
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Let the journey begin!</h1>
-            <p className={styles.heroSubtitle}>
-              Unlock a world of education with a single click! Please login to your account.
-            </p>
-            <div className={styles.features}>
-              <div className={styles.featureItem}>
-                <div className={styles.featureIcon}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
-                </div>
-                <span>24/7 Support</span>
-              </div>
-              <div className={styles.featureItem}>
-                <div className={styles.featureIcon}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                  </svg>
-                </div>
-                <span>Secure Platform</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <SideBar />
+      <div className={styles.contentSection}>
         <div className={styles.formContainer}>
-          <div className={styles.header}>
-            <h1 className={styles.title}>Welcome Back!</h1>
-            <p className={styles.subtitle}>Please enter your credentials to login</p>
-          </div>
+          <h1 className={styles.heading}>Update User Profile</h1>
           <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Full Name</label>
+              <input
+                className={styles.input}
+                type="text"
+                name="fullname"
+                placeholder="Full Name"
+                value={formData.fullname}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
             <div className={styles.formGroup}>
               <label className={styles.label}>Email Address</label>
               <input
+                className={styles.input}
                 type="email"
                 name="email"
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className={styles.input}
               />
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label}>Password</label>
-              <div className={styles.passwordContainer}>
+              <input
+                className={styles.input}
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Phone</label>
+              <input
+                className={styles.input}
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={(e) => {
+                  const re = /^[0-9\b]{0,10}$/;
+                  if (re.test(e.target.value)) {
+                    handleInputChange(e);
+                  }
+                }}
+                maxLength="10"
+                pattern="[0-9]{10}"
+                title="Please enter exactly 10 digits."
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Skills</label>
+              <div className={styles.skillsContainer}>
+                {formData.skills.map((skill, index) => (
+                  <span className={styles.skillTag} key={index}>
+                    {skill}
+                    <X 
+                      className={styles.deleteSkill} 
+                      onClick={() => handleDeleteSkill(index)}
+                      size={16} // Lucide icon size prop
+                    />
+                  </span>
+                ))}
+              </div>
+              <div className={styles.skillInputContainer}>
                 <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
                   className={styles.input}
+                  type="text"
+                  placeholder="Add Skill"
+                  value={skillInput}
+                  onChange={(e) => setSkillInput(e.target.value)}
                 />
-                <span className={styles.passwordToggle}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                </span>
+                <Plus 
+                  className={styles.addButton} 
+                  onClick={handleAddSkill}
+                  size={20} // Lucide icon size prop
+                />
               </div>
             </div>
-            <button type="submit" className={styles.button}>Login</button>
-            
-            <div className={styles.socialLogin}>
-              <div className={styles.divider}>or continue with</div>
-              <button
-                onClick={() => window.location.href = 'http://localhost:8080/oauth2/authorization/google'}
-                className={styles.googleButton}
-              >
-                <img src={GoogleLogo} alt="Google logo" className={styles.googleIcon} />
-                Sign in with Google
-              </button>
-            </div>
-            
-            <p className={styles.footer}>
-              Don't have an account?{' '}
-              <a href="/register" className={styles.link}>Sign up for free</a>
-            </p>
+            <button type="submit" className={styles.submitButton}>
+              Update Profile
+            </button>
           </form>
         </div>
       </div>
@@ -128,4 +166,4 @@ function UserLogin() {
   );
 }
 
-export default UserLogin;
+export default UpdateUserProfile;
