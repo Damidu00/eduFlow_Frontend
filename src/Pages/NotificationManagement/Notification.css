@@ -254,5 +254,10 @@
         gap: 1rem;
         padding: 1.5rem;
         text-align: center;
-      }  
+      }
+      .notif-actions {
+        width: 100%;
+        flex-direction: column;
+      }
+      
 }
