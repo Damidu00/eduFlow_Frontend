@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from "react-router";
 import { useNavigate } from "react-router-dom";
 import UserLogin from "./Pages/UserManagement/UserLogin";
 import UserRegister from "./Pages/UserManagement/UserRegister";
+import NotificationsPage from "./Pages/NotificationManagement/NotificationsPage";
 
 function ProtectedRoute({ children }) {
   const userID = localStorage.getItem("userID");
@@ -55,6 +56,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AllPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
               </ProtectedRoute>
             }
           />
