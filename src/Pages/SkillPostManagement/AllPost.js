@@ -313,4 +313,16 @@ function AllPost() {
       console.error("Error saving comment:", error);
     }
   };
+
+  const openModal = (mediaUrl) => {
+    setSelectedMedia(mediaUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedMedia(null);
+    setIsModalOpen(false);
+  };
+
+  console.log("Filtered Posts:", filteredPosts);
 }
