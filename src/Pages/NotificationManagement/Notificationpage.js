@@ -49,4 +49,50 @@ function NotificationsPage() {
           console.error('Error marking all notifications as read:', error);
         }
       };
+      const handleDelete = async (id) => {
+        try {
+          await axios.delete(`http://localhost:8080/notifications/${id}`);
+          setNotifications(notifications.filter(n => n.id !== id));
+        } catch (error) {
+          console.error('Error deleting notification:', error);
+        }
+      };
+    
+      const getNotificationIcon = (notification) => {
+        const message = notification.message.toLowerCase();
+        
+        if (message.includes('alert') || message.includes('warning')) {
+          return <AlertTriangle size={20} />;
+        } else if (message.includes('success') || message.includes('completed')) {
+          return <CheckCircle size={20} />;
+        } else if (message.includes('info')) {
+          return <Info size={20} />;
+        } else if (message.includes('message') || message.includes('comment')) {
+          return <MessageSquare size={20} />;
+        } else if (message.includes('learning') || message.includes('course')) {
+          return <BookOpen size={20} />;
+        } else if (message.includes('progress') || message.includes('achievement')) {
+          return <TrendingUp size={20} />;
+        } else if (message.includes('like') || message.includes('favorite')) {
+          return <Heart size={20} />;
+        } else if (message.includes('share') || message.includes('forward')) {
+          return <Share2 size={20} />;
+        } else if (message.includes('award') || message.includes('badge')) {
+          return <Award size={20} />;
+        } else if (message.includes('gift') || message.includes('reward')) {
+          return <Gift size={20} />;
+        } else {
+          return <Bell size={20} />;
+        }
+      };
+    
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      };
 }
