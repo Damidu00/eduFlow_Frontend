@@ -325,4 +325,340 @@ function AllPost() {
   };
 
   console.log("Filtered Posts:", filteredPosts);
+
+  return (
+    <div className="posts-container">
+      <SideBar />
+      <main>
+        <div className="posts-header">
+          <div className="posts-header-title">
+            <MessageSquare size={24} />
+            <h1>BoostPost</h1>
+          </div>
+          <div className="posts-actions">
+            <button
+              className="posts-btn posts-btn-primary"
+              onClick={() => navigate("/addNewPost")}
+            >
+              <Plus size={18} />
+              <span>Create Post</span>
+            </button>
+            <button
+              className="posts-btn posts-btn-secondary"
+              onClick={handleMyPostsToggle}
+            >
+              {showMyPosts ? (
+                <>
+                  <MessageSquare size={18} />
+                  <span>All Posts</span>
+                </>
+              ) : (
+                <>
+                  <User size={18} />
+                  <span>My Posts</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {filteredPosts.length === 0 ? (
+          <div className="posts-empty">
+            <div className="posts-empty-icon">
+              <MessageSquare size={32} />
+            </div>
+            <h3>No Posts Found</h3>
+            <p>Be the first to share with the community!</p>
+            <button
+              className="posts-btn posts-btn-primary"
+              onClick={() => navigate("/addNewPost")}
+            >
+              <Plus size={18} />
+              <span>Create New Post</span>
+            </button>
+          </div>
+        ) : (
+          <div className="posts-feed">
+            {filteredPosts.map((post) => (
+              <div key={post.id} className="post-card">
+                <div className="post-header">
+                  <div className="post-author">
+                    <div className="post-avatar">
+                      {postOwners[post.userID]?.charAt(0) || "U"}
+                    </div>
+                    <div className="post-user-info">
+                      <div className="post-user-name">
+                        {postOwners[post.userID] || "Anonymous"}
+                      </div>
+                      <div className="post-date">
+                        <Clock size={14} />
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="post-actions">
+                    {post.userID !== loggedInUserID && (
+                      <button
+                        className={`post-follow-btn ${
+                          followedUsers.includes(post.userID) ? "following" : ""
+                        }`}
+                        onClick={() => handleFollowToggle(post.userID)}
+                      >
+                        {followedUsers.includes(post.userID) ? (
+                          <>
+                            <UserCheck size={16} />
+                            <span>Following</span>
+                          </>
+                        ) : (
+                          <>
+                            <UserPlus size={16} />
+                            <span>Follow</span>
+                          </>
+                        )}
+                      </button>
+                    )}
+
+                    {post.userID === loggedInUserID && (
+                      <>
+                        <button
+                          onClick={() => handleUpdate(post.id)}
+                          className="post-action-btn"
+                        >
+                          <Edit size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(post.id)}
+                          className="post-action-btn danger"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="post-content">
+                  <h2 className="post-title">{post.title}</h2>
+                  <p className="post-description">{post.description}</p>
+
+                  {post.media && post.media.length > 0 && (
+                    <div className="post-media-grid">
+                      {post.media.map((url, index) => {
+                        const fullUrl = url.startsWith("http")
+                          ? url
+                          : `http://localhost:8080${url}`;
+                        const isVideo = url.includes(".mp4");
+
+                        return (
+                          <div key={index} className="post-media-item">
+                            {isVideo ? (
+                              <video src={fullUrl} controls muted />
+                            ) : (
+                              <img
+                                src={fullUrl}
+                                alt={`Post media ${index + 1}`}
+                                onClick={() => openModal(fullUrl)}
+                                onError={(e) => {
+                                  console.error(
+                                    "Image failed to load:",
+                                    fullUrl
+                                  );
+                                  e.target.src =
+                                    "https://via.placeholder.com/200?text=Image+Error";
+                                }}
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                <div className="post-actions">
+                  <div className="post-action-buttons">
+                    <button
+                      onClick={() => handleLike(post.id)}
+                      className={`post-action-btn ${
+                        post.likes?.[loggedInUserID] ? "liked" : ""
+                      }`}
+                    >
+                      <Heart
+                        size={18}
+                        fill={post.likes?.[loggedInUserID] ? "#493D9E" : "none"}
+                      />
+                      <span>
+                        {Object.values(post.likes || {}).filter(Boolean).length}
+                      </span>
+                    </button>
+
+                    <button className="post-action-btn">
+                      <MessageCircle size={18} />
+                      <span>{post.comments?.length || 0}</span>
+                    </button>
+
+                    <button className="post-action-btn">
+                      <Share size={18} />
+                      <span>Share</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="post-comments-section">
+                  <div className="post-comments-header">
+                    Comments ({post.comments?.length || 0})
+                  </div>
+
+                  <div className="post-comments-list">
+                    {post.comments?.map((comment) => (
+                      <div key={comment.id} className="post-comment">
+                        <div className="post-comment-avatar">
+                          {comment.userFullName?.charAt(0) || "U"}
+                        </div>
+                        <div className="post-comment-content">
+                          <div className="post-comment-user">
+                            {comment.userFullName || "Anonymous"}
+                          </div>
+                          {editingComment[comment.id] ? (
+                            <div className="post-comment-edit-form">
+                              <input
+                                type="text"
+                                className="post-comment-input"
+                                value={editingComment[comment.id]}
+                                onChange={(e) =>
+                                  setEditingComment({
+                                    ...editingComment,
+                                    [comment.id]: e.target.value,
+                                  })
+                                }
+                              />
+                              <div className="post-comment-actions">
+                                <button
+                                  onClick={() =>
+                                    setEditingComment({
+                                      ...editingComment,
+                                      [comment.id]: undefined,
+                                    })
+                                  }
+                                  className="post-action-btn"
+                                >
+                                  <X size={16} />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleSaveComment(
+                                      post.id,
+                                      comment.id,
+                                      editingComment[comment.id]
+                                    )
+                                  }
+                                  className="post-action-btn"
+                                >
+                                  <Save size={16} />
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="post-comment-text">
+                                {comment.content}
+                              </div>
+                              {comment.userID === loggedInUserID && (
+                                <div className="post-comment-actions">
+                                  <button
+                                    onClick={() =>
+                                      setEditingComment({
+                                        ...editingComment,
+                                        [comment.id]: comment.content,
+                                      })
+                                    }
+                                  >
+                                    <Edit size={14} />
+                                    <span>Edit</span>
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteComment(post.id, comment.id)
+                                    }
+                                    className="danger"
+                                  >
+                                    <Trash2 size={14} />
+                                    <span>Delete</span>
+                                  </button>
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="post-add-comment">
+                    <input
+                      type="text"
+                      className="post-comment-input"
+                      placeholder="Add a comment..."
+                      value={newComment[post.id] || ""}
+                      onChange={(e) =>
+                        setNewComment({
+                          ...newComment,
+                          [post.id]: e.target.value,
+                        })
+                      }
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleAddComment(post.id);
+                        }
+                      }}
+                    />
+                    <button
+                      className="post-comment-submit"
+                      onClick={() => handleAddComment(post.id)}
+                    >
+                      <MessageCircle size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Modal for displaying media */}
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          className="posts-modal-content"
+          overlayClassName="posts-modal"
+        >
+          {selectedMedia && (
+            <>
+              {selectedMedia.includes(".mp4") ? (
+                <video
+                  className="posts-modal-video"
+                  src={selectedMedia}
+                  controls
+                  autoPlay
+                />
+              ) : (
+                <img
+                  className="posts-modal-image"
+                  src={selectedMedia}
+                  alt="Post media"
+                />
+              )}
+              <button className="posts-modal-close" onClick={closeModal}>
+                <X size={24} />
+              </button>
+            </>
+          )}
+        </Modal>
+      </main>
+      <ChatBot />
+    </div>
+  );
 }
+
+export default AllPost;
