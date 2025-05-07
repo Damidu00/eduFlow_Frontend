@@ -133,5 +133,83 @@
   .notif-card.info {
     border-left: 4px solid #2563eb;
   }
+  .notif-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #E69DB8;
+    color: #210F37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(230, 157, 184, 0.2);
+  }
   
+  .notif-card.unread .notif-icon {
+    background: #210F37;
+    color: #E69DB8;
+  }
+  
+  .notif-details {
+    flex: 1;
+  }
+  
+  .notif-message {
+    font-size: 1rem;
+    color: #210F37;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+  
+  .notif-time {
+    font-size: 0.875rem;
+    color: #6B7280;
+  }
+  
+  .notif-card-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .notif-btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: none;
+    border: none;
+    color: #6B7280;
+  }
+  
+  .notif-btn-icon:hover {
+    background: rgba(230, 157, 184, 0.1);
+    color: #E69DB8;
+  }
+  
+  .notif-btn-icon.read {
+    color: #E69DB8;
+  }
+  
+  .notif-btn-icon.delete {
+    color: #dc2626;
+  }
+  
+  .notif-btn-icon.delete:hover {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+  }
+  
+  .notif-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(230, 157, 184, 0.08);
+  }
+    
   
