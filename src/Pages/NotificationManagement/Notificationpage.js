@@ -95,4 +95,106 @@ function NotificationsPage() {
           minute: '2-digit'
         });
       };
+
+      return (
+        <div className="notif-container">
+          <SideBar />
+          <main>
+            <div className="notif-header">
+              <div className="notif-header-title">
+                <Bell size={24} />
+                <h1>Notifications</h1>
+              </div>
+              <div className="notif-actions">
+                {notifications.filter(n => !n.read).length > 0 && (
+                  <button 
+                    onClick={handleMarkAllAsRead}
+                    className="notif-btn notif-btn-secondary"
+                    title="Mark all as read"
+                  >
+                    <Check size={16} />
+                    Mark all as read
+                  </button>
+                )}
+                <button 
+                  onClick={fetchNotifications}
+                  className="notif-btn notif-btn-primary"
+                  title="Refresh notifications"
+                >
+                  <RefreshCw size={16} />
+                  Refresh
+                </button>
+              </div>
+            </div>
+    
+            {loading ? (
+              <div className="notif-empty">
+                <div className="notif-empty-icon">
+                  <Clock size={32} />
+                </div>
+                <h3>Loading notifications...</h3>
+                <p>Please wait while we fetch your notifications.</p>
+              </div>
+            ) : notifications.length === 0 ? (
+              <div className="notif-empty">
+                <div className="notif-empty-icon">
+                  <BellOff size={32} />
+                </div>
+                <h3>No notifications yet</h3>
+                <p>When you get notifications, they'll appear here.</p>
+              </div>
+            ) : (
+              <div className="notif-list">
+                {notifications.map(notification => {
+                  let typeClass = "";
+                  const message = notification.message.toLowerCase();
+                  
+                  if (message.includes('alert') || message.includes('warning')) {
+                    typeClass = "alert";
+                  } else if (message.includes('success') || message.includes('completed')) {
+                    typeClass = "success";
+                  } else if (message.includes('info')) {
+                    typeClass = "info";
+                  }
+    
+                  return (
+                    <div 
+                      key={notification.id} 
+                      className={`notif-card ${notification.read ? '' : 'unread'} ${typeClass}`}
+                    >
+                      <div className="notif-card-content">
+                        <div className="notif-icon">
+                          {getNotificationIcon(notification)}
+                        </div>
+                        <div className="notif-details">
+                          <p className="notif-message">{notification.message}</p>
+                          <time className="notif-time">{formatDate(notification.createdAt)}</time>
+                        </div>
+                      </div>
+                      <div className="notif-card-actions">
+                        {!notification.read && (
+                          <button 
+                            onClick={() => handleMarkAsRead(notification.id)}
+                            className="notif-btn-icon read"
+                            title="Mark as read"
+                          >
+                            <Check size={18} />
+                          </button>
+                        )}
+                        <button 
+                          onClick={() => handleDelete(notification.id)}
+                          className="notif-btn-icon delete"
+                          title="Delete notification"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </main>
+        </div>
+      );
 }
