@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import UserLogin from "./Pages/UserManagement/UserLogin";
 import UserRegister from "./Pages/UserManagement/UserRegister";
 
-
 function ProtectedRoute({ children }) {
   const userID = localStorage.getItem("userID");
   if (!userID) {
@@ -42,7 +41,23 @@ function App() {
           <Route path="/register" element={<UserRegister />} />
 
           {/* Protected Routes */}
-          
+
+          <Route
+            path="/addNewPost"
+            element={
+              <ProtectedRoute>
+                <AddNewPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/allPost"
+            element={
+              <ProtectedRoute>
+                <AllPost />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </React.Fragment>
     </div>
