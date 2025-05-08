@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router";
 import { useNavigate } from "react-router-dom";
+import AddLeariningPost from "./Pages/LearningSystem/AddLeariningPost";
+import AllLearningPost from "./Pages/LearningSystem/AllLearningPost";
+import UpdateLearningPost from "./Pages/LearningSystem/UpdateLearningPost";
 import UserLogin from "./Pages/UserManagement/UserLogin";
 import UserRegister from "./Pages/UserManagement/UserRegister";
-
+import UpdateUserProfile from "./Pages/UserManagement/UpdateUserProfile";
+import AddLearningProgress from "./Pages/LearningProgress/AddLearningProgress";
+import AllLearningProgress from "./Pages/LearningProgress/AllLearningProgress";
+import UpdateLearningProgress from "./Pages/LearningProgress/UpdateLearningProgress";
 
 function ProtectedRoute({ children }) {
   const userID = localStorage.getItem("userID");
@@ -42,6 +48,62 @@ function App() {
           <Route path="/register" element={<UserRegister />} />
 
           {/* Protected Routes */}
+          <Route
+            path="/learningSystem/addLeariningPost"
+            element={
+              <ProtectedRoute>
+                <AddLeariningPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/learningSystem/allLearningPost"
+            element={
+              <ProtectedRoute>
+                <AllLearningPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/learningSystem/updateLearningPost/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateLearningPost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updateUserProfile/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateUserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addLearningProgress"
+            element={
+              <ProtectedRoute>
+                <AddLearningProgress />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/allLearningProgress"
+            element={
+              <ProtectedRoute>
+                <AllLearningProgress />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updateLearningProgress/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateLearningProgress />
+              </ProtectedRoute>
+            }
+          />
           
         </Routes>
       </React.Fragment>
