@@ -8,7 +8,7 @@ import {
   Award, Gift, Heart, ThumbsUp, Share2
 } from 'lucide-react';
 import './Notifications.css';
-
+//function in notification page  
 function NotificationsPage() {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ function NotificationsPage() {
           console.error('Error deleting notification:', error);
         }
       };
-    
+    //get notification function
       const getNotificationIcon = (notification) => {
         const message = notification.message.toLowerCase();
         
